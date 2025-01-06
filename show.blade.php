@@ -1,11 +1,11 @@
 
 @extends('adminlte::page')
-@section('title', 'Detail penerbit')
+@section('title', 'Detail Buku')
 @section('content_header')
-<h1>Form Penerbit</h1>
+<h1>Form Buku</h1>
 <br/><br/>
 <a class="btn btn-primary btn-md"
-href="{{ route('penerbit.index') }}" class="btn btn-info btn-md" role="button"><i class="fa fa-arrow-left">Back</i></a>
+href="{{ route('buku.index') }}" class="btn btn-info btn-md" role="button"><i class="fa fa-arrow-left">Back</i></a>
 
 @stop
 
@@ -16,30 +16,29 @@ href="{{ route('penerbit.index') }}" class="btn btn-info btn-md" role="button"><
     $rs3 = App\Models\kategori::all();
     
 @endphp
-@foreach($data as $d)
-<form action="{{ route('penerbit.update',$d->id) }}" method="POST">
+@foreach($ar_buku as $b)
+<form >
 @csrf
-@method('put')
 {{-- crosss-site request  forgery (CSRF) = pengcegahan serangang yang dilakukan oleh penguna yang tidak terautentiksi --}}
 <div class="form-grup">
-    <label for="">ISBN</label><input type="text" name="isbn" value="{{ $d->isbn }}" class="form-control">
+    <label for="">nama</label><input type="text" placeholder="{{ $pen->nama }}" class="form-control" disabled>
 </div>
 <div class="form-grup">
-    <label for="">Judul</label> <input type="text" name="judul" value="{{ $d->judul }}" class="form-control">
+    <label for="">email</label> <input type="email" placeholder="{{ $pen->email }}" class="form-control" disabled>
 </div>
 <div class="form-grup">
-    <label for="">tahun cetak</label> <input type="text" name="tahun_cetak" value="{{ $d->tahun_cetak }}" class="form-control">
+    <label for="">no</label> <input type="text" placeholder="{{ $pen->no }}" class="form-control" disabled>
 </div>
 <div class="form-grup">
-    <label for="">stok</label> <input type="text" name="stok" value="{{ $d->stok }}" class="form-control">
+    <label for="">stok</label> <input type="text" placeholder="{{ $b->stok }}" class="form-control">
 </div>
 <div class="form-group">
 <label>Pengarang</label>
-<select class="form-control" name="idpengarang" >
+<select class="form-control" name="idpengarang" disabled>
 <option value="">-- Pilih Pengarang --</option>
 @foreach($rs1 as $p)
 @php
-$sel1 = ($p->id == $d->idpengarang) ? 'selected' : '';
+$sel1 = ($p->id == $b->idpengarang) ? 'selected' : '';
 @endphp
 <option value="{{ $p->id }}" {{ $sel1 }}>{{ $p->nama }}</option>
 @endforeach
@@ -47,11 +46,11 @@ $sel1 = ($p->id == $d->idpengarang) ? 'selected' : '';
 {{-- Panggil master data penerbit untuk ditampilkan di element form select --}}
 <div class="form-group">
 <label>Penerbit</label>
-<select class="form-control" name="idpenerbit" >
+<select class="form-control" name="idpenerbit" disabled>
 <option value="">-- Pilih Penerbit --</option>
 @foreach($rs2 as $pen)
 @php
-$sel2 = ($pen->id == $d->idpenerbit) ? 'selected' : '';
+$sel2 = ($pen->id == $b->idpenerbit) ? 'selected' : '';
 @endphp
 <option value="{{ $pen->id }}" {{ $sel2 }}>{{ $pen->nama }}</option>
 @endforeach
@@ -61,12 +60,15 @@ $sel2 = ($pen->id == $d->idpenerbit) ? 'selected' : '';
 <label>Kategori</label><br/>
 @foreach($rs3 as $k)
 @php
-$cek = ($k->id == $d->idkategori) ? 'checked' : '';
+$cek = ($k->id == $b->idkategori) ? 'checked' : '';
 @endphp
-<input type="radio" name="idkategori" value="{{ $k->id }}" {{ $cek }} > {{ $k->nama }}&nbsp; &nbsp;
+<input type="radio" name="idkategori" value="{{ $k->id }}" {{ $cek }} disabled> {{ $k->nama }}&nbsp; &nbsp;
 @endforeach
 </div>
-<button type="submit" class="btn btn-primary">simpan</button>
+<button type="submit" class="btn btn-primary"
+name="proses">Ubah</button>
+<button type="reset" class="btn btn-warning"
+name="unproses">Batal</button>
 </form>
 @endforeach
 @stop
